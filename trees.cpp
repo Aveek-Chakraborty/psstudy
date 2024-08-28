@@ -101,6 +101,51 @@ bool same(Node* p , Node* q){
 }
 
 
+bool pathfinder(Node* root, vector<int>& path, int x){
+    if(!root) return false;
+
+    path.push_back(root->val);
+
+    if(root->val == x){
+        return true;
+    }
+    
+    if(pathfinder(root->left , path , x) || pathfinder(root->right, path , x)){
+        return true;
+    }
+
+    path.pop_back();
+    return false;
+}
+
+vector<vector<int>> zigzag (Node* root){
+    vector<vector<int>> res;
+    queue<Node*> q;
+    q.push(root);
+
+    bool ltr = true;
+
+    while(!q.empty()){
+        int size = q.size();
+        vector<int> row(size);
+
+        for(int i = 0; i<size ; i++){
+            auto n = q.front();
+            q.pop();
+
+            int index = ltr==true?i:size-i-1;
+            row[index]=n->val;
+
+            if(n->left) q.push(n->left);
+            if(n->right) q.push(n->right);
+        }
+        ltr=!ltr;
+        res.push_back(row);
+    }
+
+    return res;
+
+}
 
 
 
@@ -117,7 +162,7 @@ int main(){
     templ->right = new Node(5);
 
     templ->right->right = new Node(8); 
-    templ->right->right->right = new Node(99); 
+    templ->right->right->right = new Node(9); 
 
     tempr->right = new Node(7);
     tempr->left = new Node(6);
@@ -149,7 +194,28 @@ int main(){
 
     // cout<<isbalanced(root);
 
-    cout<<same(root , root2);
+    // cout<<same(root , root2);
+
+    // vector<int> path;
+    // // pathfinder(root , path , 9);
+    // if(pathfinder(root , path , 9)){
+    //     for(auto it : path){
+    //         cout<<it<<" ";
+    //     }
+    // }else{
+    //     cout<<"path not present";
+    // }
+
+    vector<vector<int>> v = zigzag(root);
+
+    for(auto it : v){
+        for(auto its : it){
+            cout<<its<<" ";
+        }
+        cout<<endl;
+    }
+
+    
 
     return 0;
 }
