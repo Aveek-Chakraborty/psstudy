@@ -147,6 +147,89 @@ vector<vector<int>> zigzag (Node* root){
 
 }
 
+Node* lca(Node* p, Node* q , Node* root){
+    if(!root || root==p || root==q){
+        return root;
+    }
+
+    Node* l = lca(p , q , root->left);
+    Node* r  = lca(p , q , root->right);
+
+    if(!l) return r;
+    if(!r) return l;
+
+
+    return root;
+}
+
+vector<int> topView (Node* root){
+    queue<pair<Node* , int>> q;
+    q.push({root , 0});
+    map<int , int> mp;
+
+    vector<int> res;
+
+    while(!q.empty()){
+        auto temp = q.front();
+        Node* n = temp.first;
+        int line = temp.second;
+        q.pop();
+
+        if(mp.find(line) == mp.end()){
+            mp[line] = n->val;
+        }
+
+        if(n->left){
+            q.push({n->left , line-1});
+        }
+
+        if(n->right){
+            q.push({n->right , line+1});
+        }
+    }
+
+    for(auto it : mp){
+        res.push_back(it.second);
+    }
+
+    return res;
+}
+
+vector<int> bottomView (Node* root){
+    queue<pair<Node* , int>> q;
+    q.push({root , 0});
+    map<int , int> mp;
+
+    vector<int> res;
+
+    while(!q.empty()){
+        auto temp = q.front();
+        Node* n = temp.first;
+        int line = temp.second;
+        q.pop();
+
+        mp[line] = n->val;
+
+        if(n->left){
+            q.push({n->left , line-1});
+        }
+
+        if(n->right){
+            q.push({n->right , line+1});
+        }
+    }
+
+    for(auto it : mp){
+        res.push_back(it.second);
+    }
+
+    return res;
+}
+
+
+
+
+
 
 
 
@@ -206,13 +289,21 @@ int main(){
     //     cout<<"path not present";
     // }
 
-    vector<vector<int>> v = zigzag(root);
+    // vector<vector<int>> v = zigzag(root);
 
-    for(auto it : v){
-        for(auto its : it){
-            cout<<its<<" ";
-        }
-        cout<<endl;
+    // for(auto it : v){
+    //     for(auto its : it){
+    //         cout<<its<<" ";
+    //     }
+    //     cout<<endl;
+    // }
+
+    // Node* ans = lca(templ->right->right->right , templ->left , root);
+    // cout<<ans->val; 
+
+    vector<int> ans = bottomView(root);
+    for(auto it : ans){
+        cout<<it<<" ";
     }
 
     
