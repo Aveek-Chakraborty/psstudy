@@ -122,7 +122,6 @@ public:
         buildHeap();
         for(int i = n-1; i>=1 ; i--){
             swap(h[0] , h[i]);
-            n--;
             heapify(0,i);
         }
     }
