@@ -40,10 +40,55 @@ void insertion(vector<int>& v){
     }
 }
 
+int partition(vector<int>& v, int s , int e){
+    int c = 0;
+    int pivot = v[s];
+
+    for(int i = s+1 ; i <= e ; i++){
+        if(v[i] < pivot){
+            c++;
+        }
+    }
+
+    int partition = s+c;
+    swap(v[s] , v[partition]);
+
+    int i =s ; int j=e;
+
+    while(i<partition && j > partition){
+        while(v[i] < v[partition]){
+            i++;
+        }
+
+        while(v[partition]  < v[j]){
+            j--;
+        }
+
+        if(i < partition && j>partition){
+            swap(v[i] , v[j]);
+        }
+    }
+
+    return partition;
+}
+
+void quicksort(vector<int>& v , int s , int e){
+    if(s>=e){
+        return;
+    }
+
+    int pivot = partition(v , s , e);
+
+    quicksort(v, s , pivot-1);
+    quicksort(v , pivot+1 , e);
+}
+
+
+
 int main(){
 
     vector<int> v={435,456,234,456,678,3452,234,456,7896,3452,4536,7896,2345};
-    insertion(v);
+    quicksort(v , 0 , v.size()-1);
     for(auto it : v){
         cout << it << " ";
     }
